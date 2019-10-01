@@ -13,15 +13,16 @@ const filename = path.basename(absolutePath)
 const ipAddress = ip.address()
 
 const url = `http://${ipAddress}:${flags.port}`
+const shareUrl = `${url}/${filename}`
 
 if (flags.terminal) {
-    qrcode.toString(url, { type: 'terminal' }, (err, url) => {
+    qrcode.toString(shareUrl, { type: 'terminal' }, (err, url) => {
         console.log(url)
     })
 }
 
 let qr = ''
-qrcode.toDataURL(url, { width: 500 }, (err, url) => {
+qrcode.toDataURL(shareUrl, { width: 500 }, (err, url) => {
     qr = url
 })
 
@@ -37,6 +38,6 @@ app.get('/qr', (req, res) => {
 })
 
 app.listen(flags.port, () => {
-    console.log(`Sharing on ${url}/${filename}`)
+    console.log(`Sharing on ${shareUrl}`)
     console.log(`QRCode available on ${url}/qr`)
 })
